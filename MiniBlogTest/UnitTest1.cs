@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace BackEndApiTemplateTest
+namespace MiniBlogTest
 {
     public class UnitTest1
     {
