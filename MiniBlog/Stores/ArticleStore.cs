@@ -8,6 +8,13 @@ namespace MiniBlog
     {
         static ArticleStore()
         {
+            Init();
+        }
+
+        public static List<Article> Articles { get; private set; }
+
+        public static void Init()
+        {
             Articles = new List<Article>();
             Articles.Add(new Article()
             {
@@ -20,7 +27,5 @@ namespace MiniBlog
                 Title = "开心",
             });
         }
-
-        public static List<Article> Articles { get; private set; }
     }
 }

@@ -12,5 +12,10 @@ namespace MiniBlog
         }
 
         public static List<User> Users { get; private set; }
+
+        public static void Init()
+        {
+            Users = new List<User>();
+        }
     }
 }
