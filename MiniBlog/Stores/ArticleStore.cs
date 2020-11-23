@@ -16,16 +16,8 @@ namespace MiniBlog
         public static void Init()
         {
             Articles = new List<Article>();
-            Articles.Add(new Article()
-            {
-                Content = "新年快来了",
-                Title = "新年到",
-            });
-            Articles.Add(new Article()
-            {
-                Content = "万圣节快来了",
-                Title = "开心",
-            });
+            Articles.Add(new Article(null, "Happy new year", "Happy 2021 new year"));
+            Articles.Add(new Article(null, "Happy Halloween", "Halloween is coming"));
         }
     }
 }
