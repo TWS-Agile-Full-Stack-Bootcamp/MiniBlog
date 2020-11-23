@@ -36,8 +36,7 @@ namespace MiniBlogTest.ControllerTest
         // [Fact]
         // public async void Should_create_post_fail_when_ArticleStore_unavailable()
         // {
-        //     var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-        //     var client = testServer.CreateClient();
+        //     var client = GetClient();
         //     string userNameWhoWillAdd = "Tom";
         //     string articleContent = "What a good day today!";
         //     string articleTitle = "Good day";
