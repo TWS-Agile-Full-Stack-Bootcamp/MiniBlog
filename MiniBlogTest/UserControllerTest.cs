@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using MiniBlog;
 using MiniBlog.DTO;
 using Newtonsoft.Json;
@@ -16,15 +17,17 @@ namespace MiniBlogTest
     [Collection("IntegrationTest")]
     public class UserControllerTest
     {
-        private TestServer testServer;
-
         [Fact]
         public async Task Should_get_all_users()
         {
-            UserStore.Init();
-            ArticleStore.Init();
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+
+            var userStore = testServer.Services.GetService<UserStore>();
+            userStore.Init();
+            var articleStore = testServer.Services.GetService<ArticleStore>();
+            articleStore.Init();
+
+            var client = testServer.CreateClient();
             var response = await client.GetAsync("/user");
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
@@ -35,10 +38,13 @@ namespace MiniBlogTest
         [Fact]
         public async Task Should_register_user_success()
         {
-            UserStore.Init();
-            ArticleStore.Init();
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+
+            var userStore = testServer.Services.GetService<UserStore>();
+            userStore.Init();
+            var articleStore = testServer.Services.GetService<ArticleStore>();
+            articleStore.Init();
+            var client = testServer.CreateClient();
 
             var user = new User("Test");
             var userJson = JsonConvert.SerializeObject(user);

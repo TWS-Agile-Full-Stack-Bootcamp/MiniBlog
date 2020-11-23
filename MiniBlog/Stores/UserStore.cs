@@ -4,16 +4,16 @@ using MiniBlog.DTO;
 
 namespace MiniBlog
 {
-    public abstract class UserStore
+    public class UserStore
     {
-        static UserStore()
+        public UserStore()
         {
             Users = new List<User>();
         }
 
-        public static List<User> Users { get; private set; }
+        public List<User> Users { get; private set; }
 
-        public static void Init()
+        public void Init()
         {
             Users = new List<User>();
         }

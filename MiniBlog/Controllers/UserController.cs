@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using MiniBlog.DTO;
+using MiniBlog.Service;
 
 namespace MiniBlog.Controllers
 {
@@ -9,19 +10,23 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly UserService userService;
+
+        public UserController(UserService userService)
+        {
+            this.userService = userService;
+        }
+
         [HttpPost]
         public void Register(User user)
         {
-            if (!UserStore.Users.Exists(_ => user.Name == _.Name))
-            {
-                UserStore.Users.Add(user);
-            }
+            this.userService.Register(user.Name);
         }
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return UserStore.Users;
+            return this.userService.GetAll();
         }
     }
 }

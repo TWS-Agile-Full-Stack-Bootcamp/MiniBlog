@@ -4,6 +4,7 @@ using System.Net.Mime;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using MiniBlog;
 using MiniBlog.DTO;
 using Newtonsoft.Json;
@@ -17,9 +18,12 @@ namespace MiniBlogTest
         [Fact]
         public async void Should_get_all_Article()
         {
-            UserStore.Init();
-            ArticleStore.Init();
             var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+            var userStore = testServer.Services.GetService<UserStore>();
+            userStore.Init();
+            var articleStore = testServer.Services.GetService<ArticleStore>();
+            articleStore.Init();
+
             var client = testServer.CreateClient();
             var response = await client.GetAsync("/article");
             response.EnsureSuccessStatusCode();
@@ -31,9 +35,15 @@ namespace MiniBlogTest
         [Fact]
         public async void Should_create_post_and_register_user_correct()
         {
-            UserStore.Init();
-            ArticleStore.Init();
+            // UserStore.Init();
+            // ArticleStore.Init();
             var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+
+            var userStore = testServer.Services.GetService<UserStore>();
+            userStore.Init();
+            var articleStore = testServer.Services.GetService<ArticleStore>();
+            articleStore.Init();
+
             var client = testServer.CreateClient();
 
             Article article = new Article()

@@ -4,16 +4,16 @@ using MiniBlog.DTO;
 
 namespace MiniBlog
 {
-    public abstract class ArticleStore
+    public class ArticleStore
     {
-        static ArticleStore()
+        public ArticleStore()
         {
             Init();
         }
 
-        public static List<Article> Articles { get; private set; }
+        public List<Article> Articles { get; private set; }
 
-        public static void Init()
+        public void Init()
         {
             Articles = new List<Article>();
             Articles.Add(new Article()
