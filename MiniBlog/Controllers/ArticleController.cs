@@ -13,13 +13,13 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class ArticleController : ControllerBase
     {
-        private readonly UserService service;
         private readonly ArticleService articleService;
+        private readonly UserService userService;
 
-        public ArticleController(UserService service, ArticleService articleService)
+        public ArticleController(ArticleService articleService, UserService userService)
         {
-            this.service = service;
             this.articleService = articleService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -31,9 +31,8 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public void Create(Article article)
         {
-            this.service.Register(article.UserName);
-
             this.articleService.AddArticle(article);
+            this.userService.Register(new User(article.UserName));
         }
     }
 }

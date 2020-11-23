@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,8 +31,8 @@ namespace MiniBlog
             services.AddSwaggerGen();
             services.AddScoped<UserService>();
             services.AddScoped<ArticleService>();
-            services.AddSingleton<UserStore>();
-            services.AddSingleton<ArticleStore>();
+            services.AddSingleton<ArticleStoreWhichWillReplaceInFuture>();
+            services.AddSingleton<UserStoreWhichWillReplaceInFuture>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,10 +48,7 @@ namespace MiniBlog
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseHttpsRedirection();
 
@@ -58,10 +56,7 @@ namespace MiniBlog
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

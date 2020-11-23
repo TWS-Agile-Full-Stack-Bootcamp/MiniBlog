@@ -4,18 +4,13 @@ using MiniBlog.DTO;
 
 namespace MiniBlog
 {
-    public class UserStore
+    public class UserStoreWhichWillReplaceInFuture
     {
-        public UserStore()
+        public UserStoreWhichWillReplaceInFuture()
         {
             Users = new List<User>();
         }
 
         public List<User> Users { get; private set; }
-
-        public void Init()
-        {
-            Users = new List<User>();
-        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using MiniBlog.DTO;
@@ -10,23 +11,40 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly ArticleService articleService;
         private readonly UserService userService;
 
-        public UserController(UserService userService)
+        public UserController(ArticleService articleService, UserService userService)
         {
+            this.articleService = articleService;
             this.userService = userService;
         }
 
         [HttpPost]
         public void Register(User user)
         {
-            this.userService.Register(user.Name);
+            this.userService.Register(user);
         }
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return this.userService.GetAll();
+            return userService.GetAll();
+        }
+
+        [HttpPut]
+        public User Update(User user)
+        {
+            var foundUser = userService.Update(user);
+
+            return foundUser;
+        }
+
+        [HttpDelete]
+        public void Delete(string name)
+        {
+            userService.DeleteByName(name);
+            articleService.RemoveByUserName(name);
         }
     }
 }

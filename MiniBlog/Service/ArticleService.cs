@@ -6,9 +6,9 @@ namespace MiniBlog.Service
 {
     public class ArticleService
     {
-        private readonly ArticleStore articleStore;
+        private readonly ArticleStoreWhichWillReplaceInFuture articleStore;
 
-        public ArticleService(ArticleStore articleStore)
+        public ArticleService(ArticleStoreWhichWillReplaceInFuture articleStore)
         {
             this.articleStore = articleStore;
         }
@@ -21,6 +21,11 @@ namespace MiniBlog.Service
         public List<Article> GetAll()
         {
             return articleStore.Articles.ToList();
+        }
+
+        public void RemoveByUserName(string userName)
+        {
+            this.articleStore.Articles.RemoveAll(article => article.UserName == userName);
         }
     }
 }
