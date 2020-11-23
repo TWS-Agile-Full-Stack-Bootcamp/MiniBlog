@@ -13,14 +13,16 @@ using MiniBlog.DTO;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace MiniBlogTest
+namespace MiniBlogTest.ControllerTest
 {
     [Collection("IntegrationTest")]
-    public class UserControllerTest
+    public class UserControllerTest : TestBase
     {
         private TestServer testServer;
 
-        public UserControllerTest()
+        public UserControllerTest(CustomWebApplicationFactory<Startup> factory)
+            : base(factory)
+
         {
             UserStoreWhichWillReplaceInFuture.Init();
             ArticleStoreWhichWillReplaceInFuture.Init();
