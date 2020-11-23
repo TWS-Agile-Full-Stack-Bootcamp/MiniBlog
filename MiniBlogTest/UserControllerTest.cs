@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Runtime.CompilerServices;
@@ -19,11 +20,15 @@ namespace MiniBlogTest
     {
         private TestServer testServer;
 
+        public UserControllerTest()
+        {
+            UserStoreWhichWillReplaceInFuture.Init();
+            ArticleStoreWhichWillReplaceInFuture.Init();
+        }
+
         [Fact]
         public async Task Should_get_all_users()
         {
-            UserStore.Init();
-            ArticleStore.Init();
             this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var client = this.testServer.CreateClient();
             var response = await client.GetAsync("/user");
@@ -36,8 +41,6 @@ namespace MiniBlogTest
         [Fact]
         public async Task Should_register_user_success()
         {
-            UserStore.Init();
-            ArticleStore.Init();
             this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var client = this.testServer.CreateClient();
 
@@ -56,11 +59,25 @@ namespace MiniBlogTest
             Assert.Equal(userName, users[0].Name);
         }
 
+        // [Fact]
+        // public async Task Should_register_user_fail_when_UserStore_unavailable()
+        // {
+        //     this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+        //     var client = this.testServer.CreateClient();
+        //
+        //     var userName = "Tom";
+        //     var email = "a@b.com";
+        //     var user = new User(userName, email);
+        //     var userJson = JsonConvert.SerializeObject(user);
+        //
+        //     StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
+        //     var registerResponse = await client.PostAsync("/user", content);
+        //     Assert.Equal(HttpStatusCode.InternalServerError, registerResponse.StatusCode);
+        // }
+
         [Fact]
         public async Task Should_update_user_email_success_()
         {
-            UserStore.Init();
-            ArticleStore.Init();
             this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var client = this.testServer.CreateClient();
 
@@ -84,8 +101,6 @@ namespace MiniBlogTest
         [Fact]
         public async Task Should_delete_user_and_related_article_success()
         {
-            UserStore.Init();
-            ArticleStore.Init();
             this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var client = this.testServer.CreateClient();
 

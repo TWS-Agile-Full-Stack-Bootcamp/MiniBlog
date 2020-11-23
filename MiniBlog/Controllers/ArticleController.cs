@@ -15,7 +15,7 @@ namespace MiniBlog.Controllers
         [HttpGet]
         public List<Article> List()
         {
-            return ArticleStore.Articles.ToList();
+            return ArticleStoreWhichWillReplaceInFuture.Articles.ToList();
         }
 
         [HttpPost]
@@ -23,12 +23,12 @@ namespace MiniBlog.Controllers
         {
             if (article.UserName != null)
             {
-                if (!UserStore.Users.Exists(_ => article.UserName == _.Name))
+                if (!UserStoreWhichWillReplaceInFuture.Users.Exists(_ => article.UserName == _.Name))
                 {
-                    UserStore.Users.Add(new User(article.UserName));
+                    UserStoreWhichWillReplaceInFuture.Users.Add(new User(article.UserName));
                 }
 
-                ArticleStore.Articles.Add(article);
+                ArticleStoreWhichWillReplaceInFuture.Articles.Add(article);
             }
         }
     }

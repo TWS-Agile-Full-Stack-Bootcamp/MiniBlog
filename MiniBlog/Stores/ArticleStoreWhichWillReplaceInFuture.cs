@@ -4,9 +4,9 @@ using MiniBlog.DTO;
 
 namespace MiniBlog
 {
-    public abstract class ArticleStore
+    public class ArticleStoreWhichWillReplaceInFuture
     {
-        static ArticleStore()
+        static ArticleStoreWhichWillReplaceInFuture()
         {
             Init();
         }

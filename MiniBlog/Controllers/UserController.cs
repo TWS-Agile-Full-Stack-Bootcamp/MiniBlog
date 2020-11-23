@@ -13,22 +13,22 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public void Register(User user)
         {
-            if (!UserStore.Users.Exists(_ => user.Name == _.Name))
+            if (!UserStoreWhichWillReplaceInFuture.Users.Exists(_ => user.Name == _.Name))
             {
-                UserStore.Users.Add(user);
+                UserStoreWhichWillReplaceInFuture.Users.Add(user);
             }
         }
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return UserStore.Users;
+            return UserStoreWhichWillReplaceInFuture.Users;
         }
 
         [HttpPut]
         public User Update(User user)
         {
-            var foundUser = UserStore.Users.FirstOrDefault(_ => _.Name == user.Name);
+            var foundUser = UserStoreWhichWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == user.Name);
             if (foundUser != null)
             {
                 foundUser.Email = user.Email;
@@ -40,11 +40,11 @@ namespace MiniBlog.Controllers
         [HttpDelete]
         public User Delete(string name)
         {
-            var foundUser = UserStore.Users.FirstOrDefault(_ => _.Name == name);
+            var foundUser = UserStoreWhichWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == name);
             if (foundUser != null)
             {
-                UserStore.Users.Remove(foundUser);
-                ArticleStore.Articles.RemoveAll(a => a.UserName == foundUser.Name);
+                UserStoreWhichWillReplaceInFuture.Users.Remove(foundUser);
+                ArticleStoreWhichWillReplaceInFuture.Articles.RemoveAll(a => a.UserName == foundUser.Name);
             }
 
             return foundUser;

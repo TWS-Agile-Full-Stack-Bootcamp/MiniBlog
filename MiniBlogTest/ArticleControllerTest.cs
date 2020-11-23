@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -16,8 +17,8 @@ namespace MiniBlogTest
     {
         public ArticleControllerTest()
         {
-            UserStore.Init();
-            ArticleStore.Init();
+            UserStoreWhichWillReplaceInFuture.Init();
+            ArticleStoreWhichWillReplaceInFuture.Init();
         }
 
         [Fact]
@@ -31,6 +32,22 @@ namespace MiniBlogTest
             var users = JsonConvert.DeserializeObject<List<Article>>(body);
             Assert.Equal(2, users.Count);
         }
+
+        // [Fact]
+        // public async void Should_create_post_fail_when_ArticleStore_unavailable()
+        // {
+        //     var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
+        //     var client = testServer.CreateClient();
+        //     string userNameWhoWillAdd = "Tom";
+        //     string articleContent = "What a good day today!";
+        //     string articleTitle = "Good day";
+        //     Article article = new Article(userNameWhoWillAdd, articleTitle, articleContent);
+        //
+        //     var httpContent = JsonConvert.SerializeObject(article);
+        //     StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+        //     var response = await client.PostAsync("/article", content);
+        //     Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        // }
 
         [Fact]
         public async void Should_create_post_and_register_user_correct()
