@@ -13,12 +13,17 @@ using MiniBlog.DTO;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace MiniBlogTest
+namespace MiniBlogTest.ControllerTest
 {
     [Collection("IntegrationTest")]
-    public class UserControllerTest
+    public class UserControllerTest : TestBase
     {
         private TestServer testServer;
+
+        public UserControllerTest(CustomWebApplicationFactory<Startup> factory)
+            : base(factory)
+        {
+        }
 
         [Fact]
         public async Task Should_get_all_users()
