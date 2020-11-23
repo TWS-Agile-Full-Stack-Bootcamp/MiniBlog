@@ -1,4 +1,5 @@
-﻿using MiniBlog;
+﻿using System.Net.Http;
+using MiniBlog;
 using Xunit;
 
 namespace MiniBlogTest
@@ -11,5 +12,10 @@ namespace MiniBlogTest
         }
 
         protected CustomWebApplicationFactory<Startup> Factory { get; }
+
+        protected HttpClient GetClient()
+        {
+            return Factory.CreateClient();
+        }
     }
 }

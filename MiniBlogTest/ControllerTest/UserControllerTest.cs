@@ -18,8 +18,6 @@ namespace MiniBlogTest.ControllerTest
     [Collection("IntegrationTest")]
     public class UserControllerTest : TestBase
     {
-        private TestServer testServer;
-
         public UserControllerTest(CustomWebApplicationFactory<Startup> factory)
             : base(factory)
         {
@@ -28,8 +26,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_get_all_users()
         {
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var client = GetClient();
             var response = await client.GetAsync("/user");
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
@@ -40,8 +37,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_register_user_success()
         {
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var client = GetClient();
 
             var userName = "Tom";
             var email = "a@b.com";
@@ -77,8 +73,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_update_user_email_success_()
         {
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var client = GetClient();
 
             var userName = "Tom";
             var originalEmail = "a@b.com";
@@ -100,8 +95,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async Task Should_delete_user_and_related_article_success()
         {
-            this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = this.testServer.CreateClient();
+            var client = GetClient();
 
             var userName = "Tom";
 

@@ -23,8 +23,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async void Should_get_all_Article()
         {
-            var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = testServer.CreateClient();
+            var client = GetClient();
             var response = await client.GetAsync("/article");
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
@@ -51,8 +50,7 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async void Should_create_post_and_register_user_correct()
         {
-            var testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-            var client = testServer.CreateClient();
+            var client = GetClient();
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
             string articleTitle = "Good day";
