@@ -16,7 +16,7 @@ namespace MiniBlogTest.ControllerTest
     public class ArticleControllerTest : TestBase
     {
         public ArticleControllerTest(CustomWebApplicationFactory<Startup> factory)
-        : base(factory)
+            : base(factory)
         {
             UserStoreWhichWillReplaceInFuture.Init();
             ArticleStoreWhichWillReplaceInFuture.Init();
@@ -59,7 +59,11 @@ namespace MiniBlogTest.ControllerTest
 
             var httpContent = JsonConvert.SerializeObject(article);
             StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-            await client.PostAsync("/article", content);
+            var createArticleResponse = await client.PostAsync("/article", content);
+
+            // It fail, please help
+            //Assert.Equal(HttpStatusCode.Created, createArticleResponse.StatusCode);
+
             var articleResponse = await client.GetAsync("/article");
             var body = await articleResponse.Content.ReadAsStringAsync();
             var articles = JsonConvert.DeserializeObject<List<Article>>(body);
@@ -69,6 +73,7 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(userNameWhoWillAdd, articles[2].UserName);
 
             var userResponse = await client.GetAsync("/user");
+            Assert.Equal(HttpStatusCode.Created, userResponse.StatusCode);
             var usersJson = await userResponse.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<List<User>>(usersJson);
 
