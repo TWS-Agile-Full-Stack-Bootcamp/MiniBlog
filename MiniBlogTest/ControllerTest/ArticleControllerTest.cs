@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using MiniBlog;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 using MiniBlog.Service;
+using MiniBlog.Stores;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
@@ -38,15 +39,16 @@ namespace MiniBlogTest.ControllerTest
         [Fact]
         public async void Should_create_post_fail_when_ArticleStore_unavailable()
         {
-            var mockArticleService = new Mock<ArticleService>();
-            mockArticleService.Setup(m => m.AddArticle(It.IsAny<Article>())).Throws<Exception>();
+            Mock<ArticleService> mockArticleService = new Mock<ArticleService>();
+            mockArticleService.Setup(userService => userService.AddArticle(It.IsAny<Article>())).Throws<Exception>();
             var client = Factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.AddScoped((serviceProvider) => mockArticleService.Object);
+                    services.AddScoped((serviceProvider) => { return mockArticleService.Object; });
                 });
             }).CreateClient();
+
             string userNameWhoWillAdd = "Tom";
             string articleContent = "What a good day today!";
             string articleTitle = "Good day";
@@ -69,7 +71,11 @@ namespace MiniBlogTest.ControllerTest
 
             var httpContent = JsonConvert.SerializeObject(article);
             StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-            await client.PostAsync("/article", content);
+            var createArticleResponse = await client.PostAsync("/article", content);
+
+            // It fail, please help
+            Assert.Equal(HttpStatusCode.Created, createArticleResponse.StatusCode);
+
             var articleResponse = await client.GetAsync("/article");
             var body = await articleResponse.Content.ReadAsStringAsync();
             var articles = JsonConvert.DeserializeObject<List<Article>>(body);

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 using MiniBlog.Service;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Controllers
 {
@@ -29,10 +30,18 @@ namespace MiniBlog.Controllers
         }
 
         [HttpPost]
-        public void Create(Article article)
+        public ActionResult<Article> Create(Article article)
         {
             this.articleService.AddArticle(article);
             this.userService.Register(new User(article.UserName));
+
+            return CreatedAtAction(nameof(GetByTitle), new { id = article.Id }, article);
+        }
+
+        [HttpGet("{id}")]
+        public Article GetByTitle(Guid id)
+        {
+            return this.articleService.GetById(id);
         }
     }
 }

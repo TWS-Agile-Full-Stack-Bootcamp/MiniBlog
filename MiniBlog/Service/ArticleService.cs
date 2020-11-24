@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Service
 {
@@ -26,6 +28,11 @@ namespace MiniBlog.Service
         public void RemoveByUserName(string userName)
         {
             this.articleStore.Articles.RemoveAll(article => article.UserName == userName);
+        }
+
+        public Article GetById(Guid id)
+        {
+            return this.articleStore.Articles.FirstOrDefault(article => article.Id == id);
         }
     }
 }

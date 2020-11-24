@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 using MiniBlog.Service;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Controllers
 {
@@ -11,31 +12,32 @@ namespace MiniBlog.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ArticleService articleService;
         private readonly UserService userService;
+        private readonly ArticleService articleService;
 
-        public UserController(ArticleService articleService, UserService userService)
+        public UserController(UserService userService, ArticleService articleService)
         {
-            this.articleService = articleService;
             this.userService = userService;
+            this.articleService = articleService;
         }
 
         [HttpPost]
-        public void Register(User user)
+        public ActionResult<User> Register(User user)
         {
             this.userService.Register(user);
+            return CreatedAtAction(nameof(GetByName), new { name = user.Name }, user);
         }
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return userService.GetAll();
+            return this.userService.GetAll();
         }
 
         [HttpPut]
         public User Update(User user)
         {
-            var foundUser = userService.Update(user);
+            var foundUser = this.userService.Update(user);
 
             return foundUser;
         }
@@ -43,8 +45,14 @@ namespace MiniBlog.Controllers
         [HttpDelete]
         public void Delete(string name)
         {
-            userService.DeleteByName(name);
-            articleService.RemoveByUserName(name);
+            this.userService.DeleteByName(name);
+            this.articleService.RemoveByUserName(name);
+        }
+
+        [HttpGet("{name}")]
+        public User GetByName(string name)
+        {
+            return this.userService.GetByName(name);
         }
     }
 }

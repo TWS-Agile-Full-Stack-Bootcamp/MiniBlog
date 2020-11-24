@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Service
 {
@@ -13,7 +14,7 @@ namespace MiniBlog.Service
             this.userStore = userStore;
         }
 
-        public void Register(User user)
+        public virtual void Register(User user)
         {
             if (user != null)
             {
@@ -50,6 +51,11 @@ namespace MiniBlog.Service
         {
             var foundUser = this.FindByName(name);
             this.userStore.Users.Remove(foundUser);
+        }
+
+        public User GetByName(string name)
+        {
+            return this.userStore.Users.FirstOrDefault(user => user.Name == name);
         }
     }
 }

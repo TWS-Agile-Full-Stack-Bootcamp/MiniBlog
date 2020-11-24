@@ -8,8 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using MiniBlog;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Service;
+using MiniBlog.Stores;
+using Moq;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -46,7 +50,9 @@ namespace MiniBlogTest.ControllerTest
 
             StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
             var registerResponse = await client.PostAsync("/user", content);
-            registerResponse.EnsureSuccessStatusCode();
+
+            // It fail, please help
+            Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
 
             var users = await GetUsers(client);
             Assert.Equal(1, users.Count);
@@ -54,21 +60,28 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(userName, users[0].Name);
         }
 
-        // [Fact]
-        // public async Task Should_register_user_fail_when_UserStore_unavailable()
-        // {
+        [Fact]
+        public async Task Should_register_user_fail_when_UserStore_unavailable()
+        {
+            Mock<UserService> mockArticleService = new Mock<UserService>();
+            mockArticleService.Setup(userService => userService.Register(It.IsAny<User>())).Throws<Exception>();
+            var client = Factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.AddScoped((serviceProvider) => { return mockArticleService.Object; });
+                });
+            }).CreateClient();
 
-        //     var client = GetClient();
-        //
-        //     var userName = "Tom";
-        //     var email = "a@b.com";
-        //     var user = new User(userName, email);
-        //     var userJson = JsonConvert.SerializeObject(user);
-        //
-        //     StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
-        //     var registerResponse = await client.PostAsync("/user", content);
-        //     Assert.Equal(HttpStatusCode.InternalServerError, registerResponse.StatusCode);
-        // }
+            var userName = "Tom";
+            var email = "a@b.com";
+            var user = new User(userName, email);
+            var userJson = JsonConvert.SerializeObject(user);
+
+            StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
+            var registerResponse = await client.PostAsync("/user", content);
+            Assert.Equal(HttpStatusCode.InternalServerError, registerResponse.StatusCode);
+        }
 
         [Fact]
         public async Task Should_update_user_email_success_()
@@ -82,10 +95,13 @@ namespace MiniBlogTest.ControllerTest
 
             var newUser = new User(userName, updatedEmail);
             StringContent registerUserContent = new StringContent(JsonConvert.SerializeObject(originalUser), Encoding.UTF8, MediaTypeNames.Application.Json);
-            await client.PostAsync("/user", registerUserContent);
+            var registerResponse = await client.PostAsync("/user", registerUserContent);
 
+            // It fail, please help
+            Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
             StringContent updateUserContent = new StringContent(JsonConvert.SerializeObject(newUser), Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PutAsync("/user", updateUserContent);
+
             var users = await GetUsers(client);
             Assert.Equal(1, users.Count);
             Assert.Equal(updatedEmail, users[0].Email);

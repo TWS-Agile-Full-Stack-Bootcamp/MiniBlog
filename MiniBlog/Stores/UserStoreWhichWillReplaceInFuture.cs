@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components.Server;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 
-namespace MiniBlog
+namespace MiniBlog.Stores
 {
     public class UserStoreWhichWillReplaceInFuture
     {
@@ -12,5 +12,13 @@ namespace MiniBlog
         }
 
         public List<User> Users { get; private set; }
+
+        /// <summary>
+        /// This is for test only, please help resolve!
+        /// </summary>
+        public void Init()
+        {
+            Users = new List<User>();
+        }
     }
 }

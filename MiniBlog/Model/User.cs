@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace MiniBlog.DTO
+namespace MiniBlog.Model
 {
     public class User
     {
