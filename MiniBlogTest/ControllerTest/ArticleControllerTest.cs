@@ -73,7 +73,6 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(userNameWhoWillAdd, articles[2].UserName);
 
             var userResponse = await client.GetAsync("/user");
-            Assert.Equal(HttpStatusCode.Created, userResponse.StatusCode);
             var usersJson = await userResponse.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<List<User>>(usersJson);
 
