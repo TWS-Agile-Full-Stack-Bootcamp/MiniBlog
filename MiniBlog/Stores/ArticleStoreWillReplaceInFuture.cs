@@ -6,7 +6,7 @@ namespace MiniBlog.Stores
 {
     public class ArticleStoreWillReplaceInFuture
     {
-        static ArticleStoreWillReplaceInFuture()
+        public ArticleStoreWillReplaceInFuture()
         {
             Init();
         }
