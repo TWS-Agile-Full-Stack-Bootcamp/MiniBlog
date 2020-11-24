@@ -19,8 +19,8 @@ namespace MiniBlogTest.ControllerTest
         public ArticleControllerTest(CustomWebApplicationFactory<Startup> factory)
             : base(factory)
         {
-            UserStoreWhichWillReplaceInFuture.Init();
-            ArticleStoreWhichWillReplaceInFuture.Init();
+            UserStoreWillReplaceInFuture.Init();
+            ArticleStoreWillReplaceInFuture.Init();
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace MiniBlogTest.ControllerTest
         }
 
         [Fact]
-        public async void Should_create_post_and_register_user_correct()
+        public async void Should_create_article_and_register_user_correct()
         {
             var client = GetClient();
             string userNameWhoWillAdd = "Tom";

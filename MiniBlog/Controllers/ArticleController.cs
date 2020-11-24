@@ -16,7 +16,7 @@ namespace MiniBlog.Controllers
         [HttpGet]
         public List<Article> List()
         {
-            return ArticleStoreWhichWillReplaceInFuture.Articles.ToList();
+            return ArticleStoreWillReplaceInFuture.Articles.ToList();
         }
 
         [HttpPost]
@@ -24,12 +24,12 @@ namespace MiniBlog.Controllers
         {
             if (article.UserName != null)
             {
-                if (!UserStoreWhichWillReplaceInFuture.Users.Exists(_ => article.UserName == _.Name))
+                if (!UserStoreWillReplaceInFuture.Users.Exists(_ => article.UserName == _.Name))
                 {
-                    UserStoreWhichWillReplaceInFuture.Users.Add(new User(article.UserName));
+                    UserStoreWillReplaceInFuture.Users.Add(new User(article.UserName));
                 }
 
-                ArticleStoreWhichWillReplaceInFuture.Articles.Add(article);
+                ArticleStoreWillReplaceInFuture.Articles.Add(article);
             }
 
             return article;
@@ -38,7 +38,7 @@ namespace MiniBlog.Controllers
         [HttpGet("{id}")]
         public Article GetByTitle(Guid id)
         {
-            var foundArticle = ArticleStoreWhichWillReplaceInFuture.Articles.FirstOrDefault(article => article.Id == id);
+            var foundArticle = ArticleStoreWillReplaceInFuture.Articles.FirstOrDefault(article => article.Id == id);
             return foundArticle;
         }
     }

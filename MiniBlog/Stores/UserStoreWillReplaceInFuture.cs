@@ -4,9 +4,9 @@ using MiniBlog.Model;
 
 namespace MiniBlog.Stores
 {
-    public class UserStoreWhichWillReplaceInFuture
+    public class UserStoreWillReplaceInFuture
     {
-        static UserStoreWhichWillReplaceInFuture()
+        static UserStoreWillReplaceInFuture()
         {
             Users = new List<User>();
         }

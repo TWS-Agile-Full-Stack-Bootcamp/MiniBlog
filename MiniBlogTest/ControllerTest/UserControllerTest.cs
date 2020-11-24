@@ -23,8 +23,8 @@ namespace MiniBlogTest.ControllerTest
             : base(factory)
 
         {
-            UserStoreWhichWillReplaceInFuture.Init();
-            ArticleStoreWhichWillReplaceInFuture.Init();
+            UserStoreWillReplaceInFuture.Init();
+            ArticleStoreWillReplaceInFuture.Init();
         }
 
         [Fact]
@@ -52,7 +52,7 @@ namespace MiniBlogTest.ControllerTest
             var registerResponse = await client.PostAsync("/user", content);
 
             // It fail, please help
-            //Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
 
             var users = await GetUsers(client);
             Assert.Equal(1, users.Count);
@@ -89,8 +89,6 @@ namespace MiniBlogTest.ControllerTest
             StringContent registerUserContent = new StringContent(JsonConvert.SerializeObject(originalUser), Encoding.UTF8, MediaTypeNames.Application.Json);
             var registerResponse = await client.PostAsync("/user", registerUserContent);
 
-            // It fail, please help
-            Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
             StringContent updateUserContent = new StringContent(JsonConvert.SerializeObject(newUser), Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PutAsync("/user", updateUserContent);
 

@@ -4,9 +4,9 @@ using MiniBlog.Model;
 
 namespace MiniBlog.Stores
 {
-    public class ArticleStoreWhichWillReplaceInFuture
+    public class ArticleStoreWillReplaceInFuture
     {
-        static ArticleStoreWhichWillReplaceInFuture()
+        static ArticleStoreWillReplaceInFuture()
         {
             Init();
         }

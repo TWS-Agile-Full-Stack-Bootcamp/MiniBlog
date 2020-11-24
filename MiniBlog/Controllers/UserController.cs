@@ -14,22 +14,22 @@ namespace MiniBlog.Controllers
         [HttpPost]
         public void Register(User user)
         {
-            if (!UserStoreWhichWillReplaceInFuture.Users.Exists(_ => user.Name == _.Name))
+            if (!UserStoreWillReplaceInFuture.Users.Exists(_ => user.Name.ToLower() == _.Name.ToLower()))
             {
-                UserStoreWhichWillReplaceInFuture.Users.Add(user);
+                UserStoreWillReplaceInFuture.Users.Add(user);
             }
         }
 
         [HttpGet]
         public List<User> GetAll()
         {
-            return UserStoreWhichWillReplaceInFuture.Users;
+            return UserStoreWillReplaceInFuture.Users;
         }
 
         [HttpPut]
         public User Update(User user)
         {
-            var foundUser = UserStoreWhichWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == user.Name);
+            var foundUser = UserStoreWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == user.Name);
             if (foundUser != null)
             {
                 foundUser.Email = user.Email;
@@ -41,14 +41,20 @@ namespace MiniBlog.Controllers
         [HttpDelete]
         public User Delete(string name)
         {
-            var foundUser = UserStoreWhichWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == name);
+            var foundUser = UserStoreWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name == name);
             if (foundUser != null)
             {
-                UserStoreWhichWillReplaceInFuture.Users.Remove(foundUser);
-                ArticleStoreWhichWillReplaceInFuture.Articles.RemoveAll(a => a.UserName == foundUser.Name);
+                UserStoreWillReplaceInFuture.Users.Remove(foundUser);
+                ArticleStoreWillReplaceInFuture.Articles.RemoveAll(a => a.UserName == foundUser.Name);
             }
 
             return foundUser;
+        }
+
+        [HttpGet("{name}")]
+        public User GetByName(string name)
+        {
+            return UserStoreWillReplaceInFuture.Users.FirstOrDefault(_ => _.Name.ToLower() == name.ToLower());
         }
     }
 }
