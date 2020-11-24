@@ -13,6 +13,9 @@ namespace MiniBlog
 
         public static List<User> Users { get; private set; }
 
+        /// <summary>
+        /// This is for test only, please help resolve!
+        /// </summary>
         public static void Init()
         {
             Users = new List<User>();

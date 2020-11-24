@@ -13,6 +13,9 @@ namespace MiniBlog
 
         public static List<Article> Articles { get; private set; }
 
+        /// <summary>
+        /// This is for test only, please help resolve!
+        /// </summary>
         public static void Init()
         {
             Articles = new List<Article>();
