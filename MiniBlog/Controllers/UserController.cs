@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Controllers
 {

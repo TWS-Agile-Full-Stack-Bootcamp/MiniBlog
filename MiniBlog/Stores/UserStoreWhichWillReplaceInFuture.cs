@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components.Server;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 
-namespace MiniBlog
+namespace MiniBlog.Stores
 {
     public class UserStoreWhichWillReplaceInFuture
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using MiniBlog.DTO;
+using MiniBlog.Model;
 
-namespace MiniBlog
+namespace MiniBlog.Stores
 {
     public class ArticleStoreWhichWillReplaceInFuture
     {

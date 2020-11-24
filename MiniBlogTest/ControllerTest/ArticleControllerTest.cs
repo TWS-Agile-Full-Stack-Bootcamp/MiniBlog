@@ -6,7 +6,8 @@ using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using MiniBlog;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Stores;
 using Newtonsoft.Json;
 using Xunit;
 

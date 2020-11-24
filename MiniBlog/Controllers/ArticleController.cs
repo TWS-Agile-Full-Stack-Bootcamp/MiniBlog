@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MiniBlog.DTO;
+using MiniBlog.Model;
+using MiniBlog.Stores;
 
 namespace MiniBlog.Controllers
 {
@@ -19,7 +20,7 @@ namespace MiniBlog.Controllers
         }
 
         [HttpPost]
-        public void Create(Article article)
+        public Article Create(Article article)
         {
             if (article.UserName != null)
             {
@@ -30,6 +31,15 @@ namespace MiniBlog.Controllers
 
                 ArticleStoreWhichWillReplaceInFuture.Articles.Add(article);
             }
+
+            return article;
+        }
+
+        [HttpGet("{id}")]
+        public Article GetByTitle(Guid id)
+        {
+            var foundArticle = ArticleStoreWhichWillReplaceInFuture.Articles.FirstOrDefault(article => article.Id == id);
+            return foundArticle;
         }
     }
 }
