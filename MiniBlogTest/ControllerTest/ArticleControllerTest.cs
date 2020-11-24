@@ -33,20 +33,20 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(2, users.Count);
         }
 
-        // [Fact]
-        // public async void Should_create_post_fail_when_ArticleStore_unavailable()
-        // {
-        //     var client = GetClient();
-        //     string userNameWhoWillAdd = "Tom";
-        //     string articleContent = "What a good day today!";
-        //     string articleTitle = "Good day";
-        //     Article article = new Article(userNameWhoWillAdd, articleTitle, articleContent);
-        //
-        //     var httpContent = JsonConvert.SerializeObject(article);
-        //     StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-        //     var response = await client.PostAsync("/article", content);
-        //     Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        // }
+        [Fact]
+        public async void Should_create_post_fail_when_ArticleStore_unavailable()
+        {
+            var client = GetClient();
+            string userNameWhoWillAdd = "Tom";
+            string articleContent = "What a good day today!";
+            string articleTitle = "Good day";
+            Article article = new Article(userNameWhoWillAdd, articleTitle, articleContent);
+
+            var httpContent = JsonConvert.SerializeObject(article);
+            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+            var response = await client.PostAsync("/article", content);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
 
         [Fact]
         public async void Should_create_post_and_register_user_correct()
@@ -62,7 +62,7 @@ namespace MiniBlogTest.ControllerTest
             var createArticleResponse = await client.PostAsync("/article", content);
 
             // It fail, please help
-            //Assert.Equal(HttpStatusCode.Created, createArticleResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, createArticleResponse.StatusCode);
 
             var articleResponse = await client.GetAsync("/article");
             var body = await articleResponse.Content.ReadAsStringAsync();

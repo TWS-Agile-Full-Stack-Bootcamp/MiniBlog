@@ -59,21 +59,20 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(userName, users[0].Name);
         }
 
-        // [Fact]
-        // public async Task Should_register_user_fail_when_UserStore_unavailable()
-        // {
+        [Fact]
+        public async Task Should_register_user_fail_when_UserStore_unavailable()
+        {
+            var client = GetClient();
 
-        //     var client = GetClient();
-        //
-        //     var userName = "Tom";
-        //     var email = "a@b.com";
-        //     var user = new User(userName, email);
-        //     var userJson = JsonConvert.SerializeObject(user);
-        //
-        //     StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
-        //     var registerResponse = await client.PostAsync("/user", content);
-        //     Assert.Equal(HttpStatusCode.InternalServerError, registerResponse.StatusCode);
-        // }
+            var userName = "Tom";
+            var email = "a@b.com";
+            var user = new User(userName, email);
+            var userJson = JsonConvert.SerializeObject(user);
+
+            StringContent content = new StringContent(userJson, Encoding.UTF8, MediaTypeNames.Application.Json);
+            var registerResponse = await client.PostAsync("/user", content);
+            Assert.Equal(HttpStatusCode.InternalServerError, registerResponse.StatusCode);
+        }
 
         [Fact]
         public async Task Should_update_user_email_success_()
@@ -90,7 +89,7 @@ namespace MiniBlogTest.ControllerTest
             var registerResponse = await client.PostAsync("/user", registerUserContent);
 
             // It fail, please help
-            // Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.Created, registerResponse.StatusCode);
             StringContent updateUserContent = new StringContent(JsonConvert.SerializeObject(newUser), Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PutAsync("/user", updateUserContent);
 
