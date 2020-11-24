@@ -57,8 +57,8 @@ namespace MiniBlogTest.ControllerTest
         // [Fact]
         // public async Task Should_register_user_fail_when_UserStore_unavailable()
         // {
-        //     this.testServer = new TestServer(new WebHostBuilder().UseStartup<Startup>());
-        //     var client = this.testServer.CreateClient();
+
+        //     var client = GetClient();
         //
         //     var userName = "Tom";
         //     var email = "a@b.com";
