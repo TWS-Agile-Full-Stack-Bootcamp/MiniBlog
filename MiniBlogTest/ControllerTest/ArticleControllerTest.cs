@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using MiniBlog;
 using MiniBlog.DTO;
+using MiniBlog.Service;
+using Moq;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -16,7 +20,7 @@ namespace MiniBlogTest.ControllerTest
     public class ArticleControllerTest : TestBase
     {
         public ArticleControllerTest(CustomWebApplicationFactory<Startup> factory)
-        : base(factory)
+            : base(factory)
         {
         }
 
@@ -31,20 +35,28 @@ namespace MiniBlogTest.ControllerTest
             Assert.Equal(2, users.Count);
         }
 
-        // [Fact]
-        // public async void Should_create_post_fail_when_ArticleStore_unavailable()
-        // {
-        //     var client = GetClient();
-        //     string userNameWhoWillAdd = "Tom";
-        //     string articleContent = "What a good day today!";
-        //     string articleTitle = "Good day";
-        //     Article article = new Article(userNameWhoWillAdd, articleTitle, articleContent);
-        //
-        //     var httpContent = JsonConvert.SerializeObject(article);
-        //     StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-        //     var response = await client.PostAsync("/article", content);
-        //     Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        // }
+        [Fact]
+        public async void Should_create_post_fail_when_ArticleStore_unavailable()
+        {
+            var mockArticleService = new Mock<ArticleService>();
+            mockArticleService.Setup(m => m.AddArticle(It.IsAny<Article>())).Throws<Exception>();
+            var client = Factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.AddScoped((serviceProvider) => mockArticleService.Object);
+                });
+            }).CreateClient();
+            string userNameWhoWillAdd = "Tom";
+            string articleContent = "What a good day today!";
+            string articleTitle = "Good day";
+            Article article = new Article(userNameWhoWillAdd, articleTitle, articleContent);
+
+            var httpContent = JsonConvert.SerializeObject(article);
+            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+            var response = await client.PostAsync("/article", content);
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
 
         [Fact]
         public async void Should_create_post_and_register_user_correct()

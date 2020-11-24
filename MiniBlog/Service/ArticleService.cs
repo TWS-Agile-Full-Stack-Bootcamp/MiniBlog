@@ -13,7 +13,7 @@ namespace MiniBlog.Service
             this.articleStore = articleStore;
         }
 
-        public void AddArticle(Article article)
+        public virtual void AddArticle(Article article)
         {
             articleStore.Articles.Add(article);
         }
